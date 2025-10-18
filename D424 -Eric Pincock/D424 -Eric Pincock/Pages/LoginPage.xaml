@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+   xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="D424__Eric_Pincock.Pages.LoginPage"
+    BackgroundColor="#F5F0F6">
+    <Grid RowDefinitions="0.15*,0.85*">
+        <ActivityIndicator x:Name="LoadingIndicator"
+                   IsVisible="False"
+                   IsRunning="False"
+                   Color="DarkBlue"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   WidthRequest="50"
+                   HeightRequest="50" />
+        <!-- Banner -->
+        <Grid Grid.Row="0" BackgroundColor="#25564E">
+            <Label Text="EMU Degree Planner"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="#F5F0F6"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
+        <!-- Login Form -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="30" Spacing="20"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center">
+                <Frame BorderColor="#25564E"
+                       CornerRadius="16"
+                       Padding="25"
+                       WidthRequest="320"
+                       BackgroundColor="#F5F0F6"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="20">
+                        <Label Text="Student Login"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="#160C28"/>
+                        <Label Text="Username"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#333" />
+                        <Entry x:Name="UserNameEntry"
+                               Placeholder="Enter your username"
+                               BackgroundColor="#F5F0F6"
+                               TextColor="#160C28"
+                               HeightRequest="40"
+                               Margin="0,0,0,10"/>
+                        <Label Text="Password"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#333" />
+                        <Entry x:Name="UserPasswordEntry"
+                               Placeholder="Enter your password"
+                               IsPassword="true"
+                               BackgroundColor="#F5F0F6"
+                               TextColor="#160C28"
+                               HeightRequest="40"
+                               Margin="0,0,0,10"/>
+                        <Button Text="Login"
+                                x:Name="LoginButton"
+                                Clicked="LoginButton_Clicked"
+                                BackgroundColor="#25564E"
+                                TextColor="#F5F0F6"
+                                CornerRadius="10"
+                                FontAttributes="Bold"
+                                HeightRequest="45" />
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

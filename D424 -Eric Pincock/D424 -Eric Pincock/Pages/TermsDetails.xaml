@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+  xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="D424__Eric_Pincock.Pages.TermsDetails"
+             Title="TermsDetails"
+             x:Name="TermsDetailsRoot"
+             BackgroundColor="#F5F0F6">
+    <AbsoluteLayout>
+        <Grid RowDefinitions="0.15*,0.75*,0.10*"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+            <!-- Page Banner -->
+            <Grid Grid.Row="0" BackgroundColor="#25564E" Padding="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <!-- Back Button -->
+                <Button Grid.Column="0"
+                        Text="←"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        TextColor="#F5F0F6"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center"
+                        Clicked="OnBackButtonClicked" />
+                <!-- Term Info -->
+                <VerticalStackLayout Grid.Column="1"
+                                     HorizontalOptions="Start"
+                                     VerticalOptions="Center"
+                                     Spacing="4">
+                    <Label x:Name="TermNameLabel"
+                           Text="Term Name"
+                           FontSize="21"
+                           FontAttributes="Bold"
+                           TextColor="#F5F0F6"
+                           HorizontalOptions="Start" />
+                    <Label Text="{Binding TotalCredits, StringFormat='Total Credits: {0}'}"
+                           FontSize="18"
+                           TextColor="#F5F0F6"
+                           HorizontalOptions="Start" />
+                    <Label x:Name="TermStatusLabel"
+                           Text="Status"
+                           FontSize="16"
+                           TextColor="#F5F0F6"
+                           HorizontalOptions="Start" />
+                    <Label x:Name="TermDatesLabel"
+                           Text="Start - End"
+                           FontSize="14"
+                           TextColor="#F5F0F6"
+                           HorizontalOptions="Start" />
+                </VerticalStackLayout>
+                <!-- Menu button -->
+                <Button Grid.Column="2"
+                        Text="..."
+                        FontSize="35"
+                        FontAttributes="Bold"
+                        TextColor="#F5F0F6"
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Clicked="OnBannerMenuClicked" />
+            </Grid>
+            <!-- Scrollable Courses List -->
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="30" Spacing="255">
+                    <CollectionView x:Name="TermCoursesCollectionView"
+                                    ItemsSource="{Binding TermCourses}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BorderColor="#ccc"
+                                       Padding="10"
+                                       Margin="0, 5"
+                                       BackgroundColor="#F5F0F6"
+                                       CornerRadius="10">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={x:Reference TermsDetailsRoot}, 
+                                            Path=BindingContext.TapCourseCommand}"
+                                            CommandParameter="{Binding}" />
+                                    </Frame.GestureRecognizers>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <VerticalStackLayout Grid.Column="0"
+                                                             Spacing="5"
+                                                             HorizontalOptions="Start"
+                                                             VerticalOptions="Center">
+                                            <Label Text="{Binding CourseName}" FontSize="16" TextColor="#000" />
+                                            <Label Text="{Binding Status}" FontSize="14" TextColor="#666" />
+                                            <Label Text="{Binding CourseCredits, StringFormat='Credits: {0}'}" FontSize="14" TextColor="#666"/>
+                                            <Label Text="{Binding PreReqName, StringFormat='Prerequisite: {0}'}" FontSize="12" TextColor="#999" />
+                                            <Label Text="{Binding StartDate, StringFormat='Start: {0:MMM dd, yyyy}'}" FontSize="12" TextColor="#999" />
+                                            <Label Text="{Binding EndDate, StringFormat='End: {0:MMM dd, yyyy}'}" FontSize="12" TextColor="#999" />
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1"
+                                                             HorizontalOptions="End"
+                                                             VerticalOptions="Start">
+                                            <Button Text="Edit"
+                                                    Command="{Binding Source={x:Reference TermsDetailsRoot}, 
+                                                            Path=BindingContext.EditCourseCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    FontSize="12"
+                                                    Padding="10,4"
+                                                    BackgroundColor="#eee"
+                                                    TextColor="#333"
+                                                    CornerRadius="6"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </ScrollView>
+            <!-- Add Course Button -->
+            <Grid Grid.Row="2"
+                  Padding="20"
+                  BackgroundColor="#F5F0F6"
+                  VerticalOptions="Center">
+                <Button x:Name="AddCourseButton"
+                        Text="Add Course"
+                        BackgroundColor="#25564E"
+                        TextColor="#F5F0F6"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="45"
+                        HorizontalOptions="FillAndExpand"
+                        Clicked="AddCourseButton_Clicked"/>
+            </Grid>
+        </Grid>
+        <!--Banner Menu Buttons-->
+        <Grid x:Name="BannerMenu"
+            IsVisible="False"
+            BackgroundColor="Transparent"
+            Padding="10"
+            HorizontalOptions="End"
+            VerticalOptions="Start"
+            AbsoluteLayout.LayoutBounds="1,0,0.6,AutoSize"
+            AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional">
+            <Frame BackgroundColor="#F5F0F6"
+                   BorderColor="#8BB174"
+                   CornerRadius="15"
+                   Padding="20"
+                   VerticalOptions="End"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+                    <Button Text="Log Out"
+                            BackgroundColor="#25564E"
+                            TextColor="#F5F0F6"
+                            FontAttributes="Bold"
+                            Clicked="OnLogOutClicked" />
+                    <Button Text="Cancel"
+                            BackgroundColor="#25564E"
+                            TextColor="#F5F0F6"
+                            FontAttributes="Bold"
+                            Clicked="CancelButton_Clicked"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+        <!-- Fly-In Course Editor -->
+        <Grid x:Name="CourseEditorPanel"
+            IsVisible="False"
+            TranslationY="500"
+            Opacity="0"
+            BackgroundColor="#00000080"
+            Padding="30"
+            VerticalOptions="FillAndExpand"
+            HorizontalOptions="FillAndExpand"
+            RowDefinitions="*,Auto"
+            AbsoluteLayout.LayoutBounds="0,1,1,0.9"
+            AbsoluteLayout.LayoutFlags="All"
+            ZIndex="10">
+            <Frame BackgroundColor="#8BB174"
+               CornerRadius="15"
+               Padding="20"
+               VerticalOptions="End"
+               HasShadow="True">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Course Details" 
+                               FontSize="24" 
+                               FontAttributes="Bold" 
+                               TextColor="#F5F0F6" 
+                               HorizontalOptions="Center" />
+                    <SearchBar x:Name="CourseSearchBar"
+                                   Placeholder="Search courses..."
+                                   TextChanged="OnCourseSearchTextChanged"
+                                   FontSize="16"
+                                   BackgroundColor="#F5F0F6"
+                                   TextColor="#333"
+                                   PlaceholderColor="#999" />
+                    <CollectionView x:Name="CourseSearchResults"
+                                        IsVisible="False"
+                                        SelectionMode="Single"
+                                        SelectionChanged="OnCourseSelected"
+                                        HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="10"
+                                           Margin="5"
+                                           BackgroundColor="#F5F0F6"
+                                           CornerRadius="10">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference TermsDetailsRoot}, Path=BindingContext.SearchResultTappedCommand}"
+                                                            CommandParameter="{Binding}" />
+                                    </Frame.GestureRecognizers>
+                                    <Label Text="{Binding CourseName}"
+                                               FontSize="14"
+                                               TextColor="#3A2E39" />
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Label Text="Please select a course."
+                               x:Name="SelectedCourseName"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#F5F0F6"/>
+                    <Label Text="Credits: "
+                               x:Name="SelectedCourseCredits"
+                               FontSize="16"
+                               TextColor="#F5F0F6"/>
+                    <Label x:Name="SelectedCoursePreReq"
+                               Text="Prerequisite Course: "
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="#F5F0F6"/>
+                    <Label Text="Course Status:"
+                            FontAttributes="Bold"
+                               FontSize="14"
+                               TextColor="#F5F0F6"/>
+                    <Picker x:Name="CourseStatusPicker"
+                                Title="Select Term Status"
+                                FontSize="16"
+                                TextColor="#F5F0F6"
+                                TitleColor="#F5F0F6"
+                                SelectedIndex="0"
+                                BackgroundColor="#8BB174">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Upcoming</x:String>
+                                <x:String>In Progress</x:String>
+                                <x:String>Completed</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                    <Label Text="Course Start Date"
+                               FontAttributes="Bold"
+                               TextColor="#F5F0F6"/>
+                    <DatePicker x:Name="CourseStartDatePicker"
+                                    BackgroundColor="#8BB174"
+                                    Format="MMM dd, yyyy"
+                                    MinimumDate="2020-01-01"
+                                    MaximumDate="2030-12-31"
+                                    TextColor="#F5F0F6"/>
+                    <Label Text="Course End Date"
+                               FontAttributes="Bold"
+                               TextColor="#F5F0F6"/>
+                    <DatePicker x:Name="CourseEndDatePicker"
+                                    BackgroundColor="#8BB174"
+                                    Format="MMM dd, yyyy"
+                                    MinimumDate="2020-01-01"
+                                    MaximumDate="2030-12-31" 
+                                    TextColor="#F5F0F6"/>
+                    <VerticalStackLayout Spacing="10">
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="Save Course"
+                                    x:Name="SaveCourseButton"
+                                    BackgroundColor="#25564E"
+                                    TextColor="#F5F0F6"
+                                    FontAttributes="Bold"
+                                    Clicked="SaveCourseButton_Clicked"
+                                    HorizontalOptions="FillAndExpand" />
+                            <Button Text="Remove Course"
+                                    x:Name="RemoveCourseButton"
+                                    IsVisible="False"
+                                    BackgroundColor="#25564E"
+                                    TextColor="#F5F0F6"
+                                    FontAttributes="Bold"
+                                    Clicked="RemoveCourseButton_Clicked"
+                                    HorizontalOptions="FillAndExpand" />
+                        </HorizontalStackLayout>
+                        <Button Text="Cancel"
+                                BackgroundColor="#25564E"
+                                TextColor="#F5F0F6"
+                                FontAttributes="Bold"
+                                Clicked="CancelCourseEdit_Clicked"
+                                HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </AbsoluteLayout>
+</ContentPage>
